@@ -57,9 +57,9 @@ struct Size: public es::Component
 {
     static constexpr auto name = "Size";
 
-    unsigned x, y;
+    float x, y;
 
-    Size(unsigned x = 0, unsigned y = 0): x{x}, y{y} {}
+    Size(float x = 0, float y = 0): x{x}, y{y} {}
 
     void load(const std::string& str)
     {
@@ -81,8 +81,8 @@ struct AABB: public es::Component
         // which is (0, 0) in a lot of cases. You need to add the object's position to get
         // a bounding box with its global position. The reason for this is so the AABB
         // component does not change when the object moves around.
-    std::vector<es::ID> collisions; // IDs of currently colliding world
-    std::vector<int> tileCollisions; // Tile IDs of currently colliding tiles (could be in alternate world)
+
+    std::vector<es::ID> collisions; // Entity IDs currently colliding with
 
     void load(const std::string& str)
     {
@@ -220,15 +220,17 @@ struct Selectable: public es::Component
     static constexpr auto name = "Selectable";
 
     bool selected{true};
+    std::string prototype; // Which prototype name to clone for highlighting
+    es::ID id{0}; // Entity ID of highlighting
 
     void load(const std::string& str)
     {
-        es::unpack(str, selected);
+        es::unpack(str, selected, prototype);
     }
 
     std::string save() const
     {
-        return es::pack(selected);
+        return es::pack(selected, prototype);
     }
 };
 
@@ -359,6 +361,8 @@ struct Destination: public es::Component
         return es::pack(x, y);
     }
 };
+
+// TODO: Add Rotation
 
 
 // COMPONENT FLAGS

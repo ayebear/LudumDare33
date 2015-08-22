@@ -13,5 +13,5 @@ MoveToSystem::MoveToSystem(es::World& world):
 
 void MoveToSystem::update(float dt)
 {
-	// Handle right-click for selected entities, and setup paths
+    // Handle right-click for selected entities, and setup paths
 }

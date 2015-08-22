@@ -13,13 +13,41 @@ GameState::GameState(GameResources& resources):
     gameInstance(resources.window)
 {
     // Register components and load entity prototypes
-    es::registerComponents<Position, Velocity, Size, AABB, CBA, Sprite, CircleShape, RectangleShape, Selectable, Radius, Health, Speed, RadiusRegen, Selector>();
+    es::registerComponents<Position, Velocity, Size, AABB, CBA, Sprite, CircleShape, RectangleShape, Selectable, Radius, Health, Damager, Speed, RadiusRegen, Player, Destination, Selector>();
     if (!es::loadPrototypes("data/config/entities.cfg"))
         std::cerr << "ERROR: Could not load entity prototypes.\n";
 
     auto ent = gameInstance.world.clone("Virus");
-    ent.get<CircleShape>()->shape.setPosition(100, 100);
-    ent.get<CircleShape>()->shape.setRotation(60);
+    auto pos = ent.get<Position>();
+    if (pos)
+    {
+        pos->x = 800;
+        pos->y = 450;
+    }
+
+
+    auto ent2 = gameInstance.world.clone("Virus");
+    pos = ent2.get<Position>();
+    if (pos)
+    {
+        pos->x = 900;
+        pos->y = 450;
+    }
+    auto ent3 = gameInstance.world.clone("Virus");
+    pos = ent3.get<Position>();
+    if (pos)
+    {
+        pos->x = 800;
+        pos->y = 550;
+    }
+    auto ent4 = gameInstance.world.clone("Virus");
+    pos = ent4.get<Position>();
+    if (pos)
+    {
+        pos->x = 900;
+        pos->y = 550;
+    }
+
     gameInstance.world.clone("Cell");
 }
 

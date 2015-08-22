@@ -8,6 +8,7 @@
 InputSystem::InputSystem(sf::RenderWindow& window):
     window(window)
 {
+    currentView = window.getDefaultView();
 }
 
 void InputSystem::update(float dt)
@@ -15,9 +16,9 @@ void InputSystem::update(float dt)
     proxyEvents();
 
     // Update the view if any events were sent
-    for (auto& event: es::Events::get<ViewEvent>())
-        currentView = event.view;
-    es::Events::clear<ViewEvent>();
+    // for (auto& event: es::Events::get<ViewEvent>())
+    //     currentView = event.view;
+    // es::Events::clear<ViewEvent>();
 
     sendMouseButtonEvents(currentView);
     sendMousePositionEvents(currentView);
@@ -36,14 +37,18 @@ void InputSystem::sendMouseButtonEvents(const sf::View& view)
 {
     // Check for mouse button events, and proxy mapped coordinates
     es::Events::clear<MouseClickedEvent>();
+    es::Events::clear<MouseReleasedEvent>();
     for (auto& event: es::Events::get<sf::Event>())
     {
-        if (event.type == sf::Event::MouseButtonPressed)
+        if (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::MouseButtonReleased)
         {
             // Map coordinates to game view coordinates
             sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
             sf::Vector2f gameMousePos = window.mapPixelToCoords(mousePos, view);
-            es::Events::send(MouseClickedEvent{event.mouseButton.button, gameMousePos});
+            if (event.type == sf::Event::MouseButtonPressed)
+                es::Events::send(MouseClickedEvent{event.mouseButton.button, gameMousePos});
+            else
+                es::Events::send(MouseReleasedEvent{event.mouseButton.button, gameMousePos});
         }
     }
 }

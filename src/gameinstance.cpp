@@ -13,6 +13,7 @@
 #include "movetosystem.h"
 #include "collisionsystem.h"
 #include "damagesystem.h"
+#include "spritesystem.h"
 
 GameInstance::GameInstance(sf::RenderWindow& window):
     window(window)
@@ -27,5 +28,6 @@ GameInstance::GameInstance(sf::RenderWindow& window):
     systems.add<DamageSystem>(world); // Handles collision events and causes damage, etc.
     // systems.add<>(); // Need a system for sharing anti-bodies between cells (along with attachment components for attaching other entities)
     systems.add<SelectionSystem>(world); // Handles collision events with selection box, creates selection entities for render system
+    systems.add<SpriteSystem>(world); // Updates sf::Sprite/sf::Shape components from size/position components
     systems.add<RenderSystem>(world, window); // Renders all entities
 }

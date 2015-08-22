@@ -19,6 +19,12 @@ struct MouseClickedEvent
     sf::Vector2f mousePos;
 };
 
+struct MouseReleasedEvent
+{
+    sf::Mouse::Button button;
+    sf::Vector2f mousePos;
+};
+
 struct ViewEvent
 {
     sf::View view;
