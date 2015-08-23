@@ -219,7 +219,7 @@ struct Selectable: public es::Component
 {
     static constexpr auto name = "Selectable";
 
-    bool selected{true};
+    bool selected{false};
     std::string prototype; // Which prototype name to clone for highlighting
     es::ID id{0}; // Entity ID of highlighting
 
@@ -231,6 +231,12 @@ struct Selectable: public es::Component
     std::string save() const
     {
         return es::pack(selected, prototype);
+    }
+
+    void reset()
+    {
+        selected = false;
+        id = 0;
     }
 };
 

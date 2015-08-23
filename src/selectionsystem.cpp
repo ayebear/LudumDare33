@@ -24,9 +24,8 @@ void SelectionSystem::update(float dt)
             if (comp.selected)
             {
                 // std::cout << "Reset " << comp.id << "\n";
-                comp.selected = false;
                 world.destroy(comp.id);
-                comp.id = 0;
+                comp.reset();
             }
         }
 

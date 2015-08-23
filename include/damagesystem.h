@@ -9,6 +9,7 @@
 namespace es
 {
     class World;
+    class Entity;
 }
 
 class DamageSystem: public es::System
@@ -18,6 +19,8 @@ class DamageSystem: public es::System
         void update(float dt);
 
     private:
+    	void killEntity(es::Entity& killer, es::Entity& victim);
+
         es::World& world;
 };
 
