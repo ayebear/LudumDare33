@@ -19,7 +19,7 @@ class DamageSystem: public es::System
         void update(float dt);
 
     private:
-    	void killEntity(es::Entity& killer, es::Entity& victim);
+        void killEntity(es::Entity& killer, es::Entity& victim);
 
         es::World& world;
 };

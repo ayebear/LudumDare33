@@ -1,10 +1,9 @@
 // Copyright (C) 2015 Eric Hebert (ayebear)
 // This code is licensed under GPLv3, see LICENSE.txt for details.
 
-#ifndef REGENSYSTEM_H
-#define REGENSYSTEM_H
+#ifndef HEALTHSTATUSSYSTEM_H
+#define HEALTHSTATUSSYSTEM_H
 
-#include <SFML/Graphics.hpp>
 #include <es/system.h>
 
 namespace es
@@ -13,15 +12,16 @@ namespace es
     class Entity;
 }
 
-class RegenSystem: public es::System
+/*
+Updates colors of entities based on their health components.
+*/
+class HealthStatusSystem: public es::System
 {
     public:
-        RegenSystem(es::World& world);
+        HealthStatusSystem(es::World& world);
         void update(float dt);
 
     private:
-        void handleSplit(es::Entity& ent);
-
         es::World& world;
 };
 

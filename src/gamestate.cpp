@@ -7,13 +7,15 @@
 #include <es/events.h>
 #include <es/entityprototypeloader.h>
 #include <SFML/Graphics.hpp>
+#include "nage/graphics/vectors.h"
 
 GameState::GameState(GameResources& resources):
     resources(resources),
     gameInstance(resources.window)
 {
     // Register components and load entity prototypes
-    es::registerComponents<Position, Velocity, Size, AABB, CBA, Sprite, CircleShape, RectangleShape, Selectable, Radius, Health, Damager, Speed, RadiusRegen, Player, Destination, ZIndex, Selector>();
+    es::registerComponents<Position, Velocity, Size, AABB, CBA, Sprite, CircleShape, RectangleShape, Selectable, Radius, Health, Damager, Speed, RadiusRegen, HealthRegen, Player, Destination, ZIndex, Follower, Splittable, Selector, HealthAffectsSpeed, CellProperties>();
+
     if (!es::loadPrototypes("data/config/entities.cfg"))
         std::cerr << "ERROR: Could not load entity prototypes.\n";
 

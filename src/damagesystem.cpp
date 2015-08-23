@@ -18,6 +18,7 @@ void DamageSystem::update(float dt)
     for (auto ent: world.query<Damager, AABB, Player>())
     {
         auto damager = ent.get<Damager>();
+        auto damagerHealth = ent.get<Health>();
         auto aabb = ent.get<AABB>();
         auto player = ent.get<Player>();
         for (auto collision: aabb->collisions)
@@ -31,11 +32,12 @@ void DamageSystem::update(float dt)
                     auto health = collidedEnt.get<Health>();
                     if (health)
                     {
-                        health->current -= damager->amount * dt;
+                        float damageDealt = damager->amount * dt;
+                        health->current -= damageDealt;
+                        if (damagerHealth)
+                            damagerHealth->change(damageDealt * damager->lifeSteal);
                         if (health->current < 1.0f)
-                        {
                             killEntity(ent, collidedEnt);
-                        }
                     }
 
                     // Could have another damager that reduces radius
@@ -80,6 +82,9 @@ void DamageSystem::killEntity(es::Entity& killer, es::Entity& victim)
             float offsetY = rand() % radius - (radius / 2);
             dupe.assign<Position>(center->x + offsetX, center->y + offsetY);
             dupe.remove<Destination>();
+            auto health = dupe.get<Health>();
+            if (health)
+                health->current = health->max;
             auto sel = dupe.get<Selectable>();
             if (sel)
                 sel->reset();

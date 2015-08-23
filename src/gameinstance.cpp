@@ -15,6 +15,7 @@
 #include "damagesystem.h"
 #include "spritesystem.h"
 #include "camerasystem.h"
+#include "healthstatussystem.h"
 
 GameInstance::GameInstance(sf::RenderWindow& window):
     window(window)
@@ -31,6 +32,7 @@ GameInstance::GameInstance(sf::RenderWindow& window):
     systems.add<CollisionSystem>(world); // Sends events when things collide
     systems.add<DamageSystem>(world); // Handles collision events and causes damage, etc.
     // systems.add<>(); // Need a system for sharing anti-bodies between cells (along with attachment components for attaching other entities)
+    systems.add<HealthStatusSystem>(world); // Updates colors based on health
     systems.add<SelectionSystem>(world); // Handles collision events with selection box, creates selection entities for render system
     systems.add<SpriteSystem>(world); // Updates sf::Sprite/sf::Shape components from size/position components
     systems.add<CameraSystem>(world, window, gameView, actions); // Handles manual and automatic zooming/panning

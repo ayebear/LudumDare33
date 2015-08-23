@@ -150,19 +150,23 @@ struct CircleShape: public es::Component
     static constexpr auto name = "CircleShape";
 
     sf::CircleShape shape;
+    ng::ColorCode fillColor;
+    ng::ColorCode outlineColor;
 
     void load(const std::string& str)
     {
         float radius;
         size_t pointCount;
-        std::string fillColor;
-        std::string outlineColor;
+        std::string fillColorStr;
+        std::string outlineColorStr;
         float outlineThickness;
-        es::unpack(str, radius, pointCount, fillColor, outlineColor, outlineThickness);
+        es::unpack(str, radius, pointCount, fillColorStr, outlineColorStr, outlineThickness);
+        fillColor = fillColorStr;
+        outlineColor = outlineColorStr;
         shape.setRadius(radius);
         shape.setPointCount(pointCount);
-        shape.setFillColor(ng::ColorCode(fillColor).toColor());
-        shape.setOutlineColor(ng::ColorCode(outlineColor).toColor());
+        shape.setFillColor(fillColor.toColor());
+        shape.setOutlineColor(outlineColor.toColor());
         shape.setOutlineThickness(outlineThickness);
         updateOriginPoint();
     }
@@ -171,10 +175,8 @@ struct CircleShape: public es::Component
     {
         float radius = shape.getRadius();
         size_t pointCount = shape.getPointCount();
-        std::string fillColor = ng::ColorCode(shape.getFillColor()).toString();
-        std::string outlineColor = ng::ColorCode(shape.getOutlineColor()).toString();
         float outlineThickness = shape.getOutlineThickness();
-        return es::pack(radius, pointCount, fillColor, outlineColor, outlineThickness);
+        return es::pack(radius, pointCount, fillColor.toString(), outlineColor.toString(), outlineThickness);
     }
 
     void updateOriginPoint()
@@ -276,6 +278,13 @@ struct Health: public es::Component
     {
         return es::pack(current, max);
     }
+
+    void change(float amount)
+    {
+        current += amount;
+        if (current > max)
+            current = max;
+    }
 };
 
 // How much health is reduced per second
@@ -283,16 +292,17 @@ struct Damager: public es::Component
 {
     static constexpr auto name = "Damager";
 
-    float amount{0.0f};
+    float amount{0.0f}; // Damage per second
+    float lifeSteal{0.0f}; // Health regen % of damage per second
 
     void load(const std::string& str)
     {
-        es::unpack(str, amount);
+        es::unpack(str, amount, lifeSteal);
     }
 
     std::string save() const
     {
-        return es::pack(amount);
+        return es::pack(amount, lifeSteal);
     }
 };
 
@@ -314,10 +324,28 @@ struct Speed: public es::Component
     }
 };
 
-// How much per second the radius should grow
+// How much per second the radius changes
 struct RadiusRegen: public es::Component
 {
     static constexpr auto name = "RadiusRegen";
+
+    float amount{0.0f};
+
+    void load(const std::string& str)
+    {
+        es::unpack(str, amount);
+    }
+
+    std::string save() const
+    {
+        return es::pack(amount);
+    }
+};
+
+// How much per second the health changes
+struct HealthRegen: public es::Component
+{
+    static constexpr auto name = "HealthRegen";
 
     float amount{0.0f};
 
@@ -389,6 +417,43 @@ struct ZIndex: public es::Component
     }
 };
 
+struct Follower: public es::Component
+{
+    static constexpr auto name = "Follower";
+
+    int id;
+
+    Follower(int id = 0): id(id) {}
+
+    void load(const std::string& str)
+    {
+        es::unpack(str, id);
+    }
+
+    std::string save() const
+    {
+        return es::pack(id);
+    }
+};
+
+struct Splittable: public es::Component
+{
+    static constexpr auto name = "Splittable";
+
+    float splitAtRadius{100.0f};
+    float radiusMultiplier{1.5f};
+
+    void load(const std::string& str)
+    {
+        es::unpack(str, splitAtRadius, radiusMultiplier);
+    }
+
+    std::string save() const
+    {
+        return es::pack(splitAtRadius, radiusMultiplier);
+    }
+};
+
 // TODO: Add Rotation
 
 
@@ -400,6 +465,13 @@ struct Selector: public es::Component
     static constexpr auto name = "Selector";
 };
 
+// Means an entity is the actual highlighted selection
+struct Selection: public es::Component
+{
+    static constexpr auto name = "Selection";
+};
+
+// Health affects speed (initially for viruses)
 struct HealthAffectsSpeed: public es::Component
 {
     static constexpr auto name = "HealthAffectsSpeed";
