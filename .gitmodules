@@ -1,0 +1,8 @@
+[submodule "lib/nage"]
+	path = lib/nage
+	url = git@github.com:ayebear/NAGE.git
+	branch = master
+[submodule "lib/es"]
+	path = lib/es
+	url = git@github.com:ayebear/es.git
+	branch = master
