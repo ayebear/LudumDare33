@@ -56,4 +56,24 @@ void SelectionSystem::update(float dt)
             }
         }
     }
+
+    // Update positions of highlights
+    for (auto ent: world.query<Position, Selectable>())
+    {
+        auto sel = ent.get<Selectable>();
+        if (sel->selected)
+        {
+            auto pos = ent.get<Position>();
+            auto selEnt = world.get(sel->id);
+            if (selEnt)
+            {
+                auto selPos = selEnt.get<Position>();
+                if (selPos)
+                {
+                    selPos->x = pos->x;
+                    selPos->y = pos->y;
+                }
+            }
+        }
+    }
 }

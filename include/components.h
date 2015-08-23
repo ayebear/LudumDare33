@@ -351,6 +351,8 @@ struct Destination: public es::Component
 
     float x, y;
 
+    Destination(float x = 0, float y = 0): x(x), y(y) {}
+
     void load(const std::string& str)
     {
         es::unpack(str, x, y);
