@@ -15,6 +15,11 @@ CameraSystem::CameraSystem(es::World& world, sf::RenderWindow& window, sf::View&
 {
 }
 
+void CameraSystem::initialize()
+{
+    zoomLevel = 1.0f;
+}
+
 void CameraSystem::update(float dt)
 {
     const float panSpeed = 600.0f * zoomLevel;

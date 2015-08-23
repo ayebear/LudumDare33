@@ -30,6 +30,7 @@ class CameraSystem: public es::System
 {
     public:
         CameraSystem(es::World& world, sf::RenderWindow& window, sf::View& gameView, ng::ActionHandler& actions);
+        void initialize();
         void update(float dt);
 
     private:

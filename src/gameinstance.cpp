@@ -16,6 +16,7 @@
 #include "spritesystem.h"
 #include "camerasystem.h"
 #include "healthstatussystem.h"
+#include "winsystem.h"
 
 GameInstance::GameInstance(sf::RenderWindow& window):
     window(window)
@@ -36,5 +37,6 @@ GameInstance::GameInstance(sf::RenderWindow& window):
     systems.add<SelectionSystem>(world); // Handles collision events with selection box, creates selection entities for render system
     systems.add<SpriteSystem>(world); // Updates sf::Sprite/sf::Shape components from size/position components
     systems.add<CameraSystem>(world, window, gameView, actions); // Handles manual and automatic zooming/panning
+    systems.add<WinSystem>(world); // Detects when a player wins
     systems.add<RenderSystem>(world, window, gameView); // Renders all entities
 }

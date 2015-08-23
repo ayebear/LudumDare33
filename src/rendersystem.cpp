@@ -3,6 +3,8 @@
 
 #include "rendersystem.h"
 #include "nage/graphics/views.h"
+#include "components.h"
+#include "textcomponent.h"
 #include <map>
 
 RenderSystem::RenderSystem(es::World& world, sf::RenderWindow& window, sf::View& gameView):
@@ -33,6 +35,8 @@ void RenderSystem::update(float dt)
             drawable = &(ent.get<CircleShape>()->shape);
         else if (ent.has<RectangleShape>())
             drawable = &(ent.get<RectangleShape>()->shape);
+        else if (ent.has<Text>())
+            drawable = &(ent.get<Text>()->text);
 
         // Add pointer to the z-index map
         if (drawable)

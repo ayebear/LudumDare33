@@ -4,6 +4,7 @@
 #include "gamestate.h"
 #include "gameresources.h"
 #include "components.h"
+#include "textcomponent.h"
 #include <es/events.h>
 #include <es/entityprototypeloader.h>
 #include <SFML/Graphics.hpp>
@@ -14,7 +15,7 @@ GameState::GameState(GameResources& resources):
     gameInstance(resources.window)
 {
     // Register components and load entity prototypes
-    es::registerComponents<Position, Velocity, Size, AABB, CBA, Sprite, CircleShape, RectangleShape, Selectable, Radius, Health, Damager, Speed, RadiusRegen, HealthRegen, Player, Destination, ZIndex, Follower, Splittable, Selector, Selection, HealthAffectsSpeed, CellProperties>();
+    es::registerComponents<Position, Velocity, Size, AABB, CBA, Sprite, CircleShape, RectangleShape, Selectable, Radius, Health, Damager, Speed, RadiusRegen, HealthRegen, Player, Destination, ZIndex, Follower, Splittable, Text, Selector, Selection, HealthAffectsSpeed, CellProperties>();
 
     if (!es::loadPrototypes("data/config/entities.cfg"))
         std::cerr << "ERROR: Could not load entity prototypes.\n";
@@ -27,6 +28,7 @@ GameState::GameState(GameResources& resources):
 void GameState::onStart()
 {
     gameInstance.world.clear();
+    gameInstance.gameView = resources.window.getDefaultView();
     gameInstance.systems.initializeAll();
 
     gameInstance.world.clone("Boundary");
@@ -38,9 +40,7 @@ void GameState::onStart()
         {
             auto ent = gameInstance.world.clone("Cell");
             ent.assign<Position>(x, y);
-            break;
         }
-        break;
     }
 
     // Add initial virus
