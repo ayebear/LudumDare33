@@ -5,6 +5,7 @@
 #include <es/world.h>
 #include <SFML/Window.hpp>
 #include "nage/actions/actionhandler.h"
+#include <iostream>
 
 CameraSystem::CameraSystem(es::World& world, sf::RenderWindow& window, sf::View& gameView, ng::ActionHandler& actions):
     world(world),
@@ -16,8 +17,25 @@ CameraSystem::CameraSystem(es::World& world, sf::RenderWindow& window, sf::View&
 
 void CameraSystem::update(float dt)
 {
+    const float panSpeed = 600.0f * zoomLevel;
     if (actions["zoomIn"].isActive())
-        gameView.zoom(1.0f / (1.0f + dt));
+    {
+        float zoomAmount = 1.0f / (1.0f + dt);
+        zoomLevel *= zoomAmount;
+        gameView.zoom(zoomAmount);
+    }
     if (actions["zoomOut"].isActive())
-        gameView.zoom(1.0f + dt);
+    {
+        float zoomAmount = 1.0f + dt;
+        zoomLevel *= zoomAmount;
+        gameView.zoom(zoomAmount);
+    }
+    if (actions["panLeft"].isActive())
+        gameView.move(-panSpeed * dt, 0);
+    if (actions["panRight"].isActive())
+        gameView.move(panSpeed * dt, 0);
+    if (actions["panUp"].isActive())
+        gameView.move(0, -panSpeed * dt);
+    if (actions["panDown"].isActive())
+        gameView.move(0, panSpeed * dt);
 }

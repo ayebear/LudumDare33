@@ -23,7 +23,14 @@ void MovementSystem::update(float dt)
         auto pos = ent.get<Position>();
         auto dest = ent.get<Destination>();
         auto speed = ent.get<Speed>();
-        auto newPos = calculatePosition(sf::Vector2f(pos->x, pos->y), sf::Vector2f(dest->x, dest->y), speed->speed, dt);
+        float calculatedSpeed = speed->speed;
+        if (ent.has<HealthAffectsSpeed>())
+        {
+            auto health = ent.get<Health>();
+            if (health)
+                calculatedSpeed *= (health->current / health->max);
+        }
+        auto newPos = calculatePosition(sf::Vector2f(pos->x, pos->y), sf::Vector2f(dest->x, dest->y), calculatedSpeed, dt);
         pos->x = newPos.x;
         pos->y = newPos.y;
         // std::cout << pos->x << ", " << pos->y << "\n";

@@ -16,6 +16,7 @@ RegenSystem::RegenSystem(es::World& world):
 
 void RegenSystem::update(float dt)
 {
+    // Update radius components
     for (auto ent: world.query<RadiusRegen, Radius>())
     {
         auto regen = ent.get<RadiusRegen>();
@@ -26,6 +27,7 @@ void RegenSystem::update(float dt)
             handleSplit(ent);
     }
 
+    // Update health components
     for (auto ent: world.query<HealthRegen, Health>())
     {
         auto regen = ent.get<HealthRegen>();
@@ -76,7 +78,7 @@ void RegenSystem::handleSplit(es::Entity& ent)
 
     // Set new position (anywhere near it)
     float angle = rand() % 360;
-    auto vec = ng::vec::angleToVector(angle) * (radius2->radius * 2);
+    auto vec = ng::vec::angleToVector(angle) * (radius2->radius * 3 * multiplier);
     position2->x += vec.x;
     position2->y += vec.y;
 }

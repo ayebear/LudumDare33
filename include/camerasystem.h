@@ -37,6 +37,7 @@ class CameraSystem: public es::System
         sf::RenderWindow& window;
         sf::View& gameView;
         ng::ActionHandler& actions;
+        float zoomLevel{1.0f};
 };
 
 #endif
