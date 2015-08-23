@@ -40,12 +40,15 @@ void SelectionBoxSystem::update(float dt)
     }
     else
     {
-        for (auto& event: es::Events::get<MouseClickedEvent>())
+        if (!es::Events::exists<MouseReleasedEvent>())
         {
-            if (event.button == sf::Mouse::Left)
+            for (auto& event: es::Events::get<MouseClickedEvent>())
             {
-                selecting = true;
-                startPos(event.mousePos);
+                if (event.button == sf::Mouse::Left)
+                {
+                    selecting = true;
+                    startPos(event.mousePos);
+                }
             }
         }
     }

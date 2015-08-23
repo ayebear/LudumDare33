@@ -5,6 +5,7 @@
 #define MOVETOSYSTEM_H
 
 #include <es/system.h>
+#include <SFML/System/Vector2.hpp>
 
 namespace es
 {
@@ -19,6 +20,7 @@ class MoveToSystem: public es::System
 
     private:
         es::World& world;
+        sf::Vector2f currentMousePos;
 };
 
 #endif
