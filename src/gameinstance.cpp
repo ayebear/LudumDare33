@@ -14,12 +14,16 @@
 #include "collisionsystem.h"
 #include "damagesystem.h"
 #include "spritesystem.h"
+#include "camerasystem.h"
 
 GameInstance::GameInstance(sf::RenderWindow& window):
     window(window)
 {
+    gameView = window.getDefaultView();
+    actions.loadFromConfig("data/config/controls.cfg");
+
     // Setup systems
-    systems.add<InputSystem>(window); // Proxy SFML input events
+    systems.add<InputSystem>(window, gameView); // Proxy SFML input events
     systems.add<SelectionBoxSystem>(world); // Create selection box entity from mouse input
     systems.add<RegenSystem>(world); // Handle regenerating health/growing cells
     systems.add<MoveToSystem>(world); // Handle right-click to move selected entities (creates paths)
@@ -29,5 +33,6 @@ GameInstance::GameInstance(sf::RenderWindow& window):
     // systems.add<>(); // Need a system for sharing anti-bodies between cells (along with attachment components for attaching other entities)
     systems.add<SelectionSystem>(world); // Handles collision events with selection box, creates selection entities for render system
     systems.add<SpriteSystem>(world); // Updates sf::Sprite/sf::Shape components from size/position components
-    systems.add<RenderSystem>(world, window); // Renders all entities
+    systems.add<CameraSystem>(world, window, gameView, actions); // Handles manual and automatic zooming/panning
+    systems.add<RenderSystem>(world, window, gameView); // Renders all entities
 }

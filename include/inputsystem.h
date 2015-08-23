@@ -13,7 +13,7 @@ This class handles the processing of all inputs, and sends out global input even
 class InputSystem: public es::System
 {
     public:
-        InputSystem(sf::RenderWindow& window);
+        InputSystem(sf::RenderWindow& window, sf::View& gameView);
         void update(float dt);
 
     private:
@@ -22,9 +22,8 @@ class InputSystem: public es::System
         void sendMousePositionEvents(const sf::View& view);
 
         sf::RenderWindow& window;
+        sf::View& gameView;
         sf::Vector2f currentMousePos;
-
-        sf::View currentView;
 };
 
 #endif

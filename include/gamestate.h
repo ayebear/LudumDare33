@@ -11,7 +11,7 @@ class GameResources;
 
 /*
 The state for the playable game.
-Contains the game world, world, and systems.
+Contains the game resources and instance.
 */
 class GameState: public ng::BaseState
 {
@@ -24,6 +24,9 @@ class GameState: public ng::BaseState
         void draw() {} // Update() calls the render system to draw
 
     private:
+        void close();
+        void restart();
+
         GameResources& resources;
         GameInstance gameInstance;
 };

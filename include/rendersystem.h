@@ -22,13 +22,14 @@ This class handles all of the drawing to the window.
 class RenderSystem: public es::System
 {
     public:
-        RenderSystem(es::World& world, sf::RenderWindow& window);
+        RenderSystem(es::World& world, sf::RenderWindow& window, sf::View& gameView);
         void initialize();
         void update(float dt);
 
     private:
         es::World& world;
         sf::RenderWindow& window;
+        sf::View& gameView;
 };
 
 #endif

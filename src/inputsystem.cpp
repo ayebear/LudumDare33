@@ -5,10 +5,10 @@
 #include "es/events.h"
 #include "gameevents.h"
 
-InputSystem::InputSystem(sf::RenderWindow& window):
-    window(window)
+InputSystem::InputSystem(sf::RenderWindow& window, sf::View& gameView):
+    window(window),
+    gameView(gameView)
 {
-    currentView = window.getDefaultView();
 }
 
 void InputSystem::update(float dt)
@@ -20,8 +20,8 @@ void InputSystem::update(float dt)
     //     currentView = event.view;
     // es::Events::clear<ViewEvent>();
 
-    sendMouseButtonEvents(currentView);
-    sendMousePositionEvents(currentView);
+    sendMouseButtonEvents(gameView);
+    sendMousePositionEvents(gameView);
 }
 
 void InputSystem::proxyEvents()

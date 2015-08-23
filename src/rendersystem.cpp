@@ -5,9 +5,10 @@
 #include "nage/graphics/views.h"
 #include <map>
 
-RenderSystem::RenderSystem(es::World& world, sf::RenderWindow& window):
+RenderSystem::RenderSystem(es::World& world, sf::RenderWindow& window, sf::View& gameView):
     world(world),
-    window(window)
+    window(window),
+    gameView(gameView)
 {
 }
 
@@ -40,6 +41,8 @@ void RenderSystem::update(float dt)
 
 
     // Draw entities in z-index order
+
+    window.setView(gameView);
 
     window.clear(sf::Color(96, 96, 96));
 

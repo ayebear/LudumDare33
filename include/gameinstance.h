@@ -7,6 +7,7 @@
 #include "es/world.h"
 #include "es/systemcontainer.h"
 #include "nage/actions/actionhandler.h"
+#include <SFML/Graphics/View.hpp>
 
 class GameSaveHandler;
 namespace sf
@@ -25,8 +26,8 @@ struct GameInstance
 
     es::World world;
     es::SystemContainer systems;
-
     ng::ActionHandler actions;
+    sf::View gameView;
 };
 
 #endif
