@@ -17,38 +17,17 @@ GameState::GameState(GameResources& resources):
     if (!es::loadPrototypes("data/config/entities.cfg"))
         std::cerr << "ERROR: Could not load entity prototypes.\n";
 
-    gameInstance.world.clone("Cell");
+    for (int y = 100; y <= 900; y += 600)
+    {
+        for (int x = 100; x <= 1600; x += 1300)
+        {
+            auto ent = gameInstance.world.clone("Cell");
+            ent.assign<Position>(x, y);
+        }
+    }
 
     auto ent = gameInstance.world.clone("Virus");
-    auto pos = ent.get<Position>();
-    if (pos)
-    {
-        pos->x = 800;
-        pos->y = 450;
-    }
-
-
-    auto ent2 = gameInstance.world.clone("Virus");
-    pos = ent2.get<Position>();
-    if (pos)
-    {
-        pos->x = 900;
-        pos->y = 450;
-    }
-    auto ent3 = gameInstance.world.clone("Virus");
-    pos = ent3.get<Position>();
-    if (pos)
-    {
-        pos->x = 800;
-        pos->y = 550;
-    }
-    auto ent4 = gameInstance.world.clone("Virus");
-    pos = ent4.get<Position>();
-    if (pos)
-    {
-        pos->x = 900;
-        pos->y = 550;
-    }
+    ent.assign<Position>(800, 450);
 }
 
 void GameState::onStart()

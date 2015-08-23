@@ -19,9 +19,9 @@ const cfg::File::ConfigMap GameResources::defaultOptions = {
 };
 
 GameResources::GameResources(const std::string& windowTitle):
-    config("data/config/game.cfg", defaultOptions),
-    music("data/config/music.cfg"),
-    sound("sounds.cfg")
+    config("data/config/game.cfg", defaultOptions)
+    // music("data/config/music.cfg"),
+    // sound("sounds.cfg")
 {
     if (!config)
     {

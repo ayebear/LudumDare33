@@ -19,8 +19,8 @@ class SelectionBoxSystem: public es::System
         void update(float dt);
 
     private:
-    	void updatePos(const sf::Vector2f& pos);
-    	void startPos(const sf::Vector2f& pos);
+        void updatePos(const sf::Vector2f& pos);
+        void startPos(const sf::Vector2f& pos);
 
         es::World& world;
         bool selecting{false};

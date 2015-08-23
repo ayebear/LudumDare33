@@ -394,4 +394,15 @@ struct Selector: public es::Component
     static constexpr auto name = "Selector";
 };
 
+struct HealthAffectsSpeed: public es::Component
+{
+    static constexpr auto name = "HealthAffectsSpeed";
+};
+
+// Health affects color, max health affects radius
+struct CellProperties: public es::Component
+{
+    static constexpr auto name = "CellProperties";
+};
+
 #endif

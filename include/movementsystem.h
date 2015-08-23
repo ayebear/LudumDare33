@@ -19,7 +19,7 @@ class MovementSystem: public es::System
         void update(float dt);
 
     private:
-    	sf::Vector2f calculatePosition(const sf::Vector2f& start, const sf::Vector2f& end, float speed, float dt) const;
+        sf::Vector2f calculatePosition(const sf::Vector2f& start, const sf::Vector2f& end, float speed, float dt) const;
 
         es::World& world;
 };

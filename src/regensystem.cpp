@@ -5,6 +5,7 @@
 #include <es/events.h>
 #include <es/world.h>
 #include "gameevents.h"
+#include "components.h"
 
 RegenSystem::RegenSystem(es::World& world):
     world(world)
@@ -13,5 +14,10 @@ RegenSystem::RegenSystem(es::World& world):
 
 void RegenSystem::update(float dt)
 {
-
+    for (auto ent: world.query<RadiusRegen, Radius>())
+    {
+        auto regen = ent.get<RadiusRegen>();
+        auto radius = ent.get<Radius>();
+        radius->radius += regen->amount * dt;
+    }
 }
