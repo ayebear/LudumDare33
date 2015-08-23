@@ -49,11 +49,6 @@ sf::Vector2f MovementSystem::calculatePosition(const sf::Vector2f& start, const 
 {
     auto diff = end - start;
     ng::vec::normalize(diff);
-
-    // auto distance = ng::vec::distance(start, end);
-    // distance / speed = time to travel path
-
-    // auto velocity = diff * speed;
     float scale = dt * speed;
     auto pos = start;
     pos.x += diff.x * scale;
