@@ -26,8 +26,14 @@ GameState::GameState(GameResources& resources):
         }
     }
 
-    auto ent = gameInstance.world.clone("Virus");
-    ent.assign<Position>(800, 450);
+    // auto ent = gameInstance.world.clone("Virus");
+    // ent.assign<Position>(800, 450);
+
+    for (int x = 0; x < 25; ++x)
+    {
+        auto ent = gameInstance.world.clone("Virus");
+        ent.assign<Position>(800, 450);
+    }
 }
 
 void GameState::onStart()

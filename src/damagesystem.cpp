@@ -14,20 +14,25 @@ DamageSystem::DamageSystem(es::World& world):
 
 void DamageSystem::update(float dt)
 {
-    for (auto ent: world.query<Damager, AABB>())
+    for (auto ent: world.query<Damager, AABB, Player>())
     {
-    	auto damager = ent.get<Damager>();
-    	auto aabb = ent.get<AABB>();
-    	for (auto collision: aabb->collisions)
-    	{
-    		auto collidedEnt = world.get(collision);
-    		auto health = collidedEnt.get<Health>();
-    		if (health)
-    			health->current -= damager->amount * dt;
+        auto damager = ent.get<Damager>();
+        auto aabb = ent.get<AABB>();
+        auto player = ent.get<Player>();
+        for (auto collision: aabb->collisions)
+        {
+            auto collidedEnt = world.get(collision);
+            auto collidedPlayer = collidedEnt.get<Player>();
+            if (player->id != collidedPlayer->id)
+            {
+                auto health = collidedEnt.get<Health>();
+                if (health)
+                    health->current -= damager->amount * dt;
 
-    		auto radius = collidedEnt.get<Radius>();
-    		if (radius)
-    			radius->radius -= damager->amount * dt;
-    	}
+                auto radius = collidedEnt.get<Radius>();
+                if (radius)
+                    radius->radius -= damager->amount * dt;
+            }
+        }
     }
 }
