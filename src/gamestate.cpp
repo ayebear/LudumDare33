@@ -13,7 +13,7 @@ GameState::GameState(GameResources& resources):
     gameInstance(resources.window)
 {
     // Register components and load entity prototypes
-    es::registerComponents<Position, Velocity, Size, AABB, CBA, Sprite, CircleShape, RectangleShape, Selectable, Radius, Health, Damager, Speed, RadiusRegen, Player, Destination, Selector>();
+    es::registerComponents<Position, Velocity, Size, AABB, CBA, Sprite, CircleShape, RectangleShape, Selectable, Radius, Health, Damager, Speed, RadiusRegen, Player, Destination, ZIndex, Selector>();
     if (!es::loadPrototypes("data/config/entities.cfg"))
         std::cerr << "ERROR: Could not load entity prototypes.\n";
 

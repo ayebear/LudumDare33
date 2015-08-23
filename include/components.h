@@ -364,6 +364,25 @@ struct Destination: public es::Component
     }
 };
 
+struct ZIndex: public es::Component
+{
+    static constexpr auto name = "ZIndex";
+
+    int layer;
+
+    ZIndex(int layer = 0): layer(layer) {}
+
+    void load(const std::string& str)
+    {
+        es::unpack(str, layer);
+    }
+
+    std::string save() const
+    {
+        return es::pack(layer);
+    }
+};
+
 // TODO: Add Rotation
 
 

@@ -3,6 +3,7 @@
 
 #include "rendersystem.h"
 #include "nage/graphics/views.h"
+#include <map>
 
 RenderSystem::RenderSystem(es::World& world, sf::RenderWindow& window):
     world(world),
@@ -16,29 +17,46 @@ void RenderSystem::initialize()
 
 void RenderSystem::update(float dt)
 {
-    window.clear(sf::Color(128, 128, 128));
+    // Build up z-index map
 
-    for (auto& sprite: world.getComponents<Sprite>())
-        window.draw(sprite.sprite);
+    std::map<int, std::vector<const sf::Drawable*>> entsToDraw;
+    for (auto ent: world.query<ZIndex>())
+    {
+        int layer = ent.get<ZIndex>()->layer;
 
-    for (auto& shape: world.getComponents<CircleShape>())
-        window.draw(shape.shape);
+        // Try to get a drawable component
+        const sf::Drawable* drawable = nullptr;
+        if (ent.has<Sprite>())
+            drawable = &(ent.get<Sprite>()->sprite);
+        else if (ent.has<CircleShape>())
+            drawable = &(ent.get<CircleShape>()->shape);
+        else if (ent.has<RectangleShape>())
+            drawable = &(ent.get<RectangleShape>()->shape);
 
-    for (auto& shape: world.getComponents<RectangleShape>())
-        window.draw(shape.shape);
+        // Add pointer to the z-index map
+        if (drawable)
+            entsToDraw[layer].push_back(drawable);
+    }
 
-    // To draw selection boxes (probably should just create more entities)
-    // for (auto ent: world.query<RectangleShape>())
-    // {
-    //     auto shape = ent.get<RectangleShape>();
-    //     window.draw(shape->shape);
 
-    //     auto sel = ent.get<Selectable>();
-    //     if (sel && sel->selected)
-    //     {
-    //         sf::
-    //     }
-    // }
+    // Draw entities in z-index order
+
+    window.clear(sf::Color(96, 96, 96));
+
+    for (auto& layer: entsToDraw)
+    {
+        for (auto& drawable: layer.second)
+            window.draw(*drawable);
+    }
+
+    // for (auto& sprite: world.getComponents<Sprite>())
+    //     window.draw(sprite.sprite);
+
+    // for (auto& shape: world.getComponents<CircleShape>())
+    //     window.draw(shape.shape);
+
+    // for (auto& shape: world.getComponents<RectangleShape>())
+    //     window.draw(shape.shape);
 
     window.display();
 }

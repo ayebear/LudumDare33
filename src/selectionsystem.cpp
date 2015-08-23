@@ -16,8 +16,7 @@ SelectionSystem::SelectionSystem(es::World& world):
 void SelectionSystem::update(float dt)
 {
     // Handle collisions with selection box (set selectable flags, and add entities for drawing selection areas)
-    auto selBox = world.get("selBox");
-    if (selBox)
+    for (auto selBox: world.query<Selector>())
     {
         // Reset all selectable flags
         for (auto& comp: world.getComponents<Selectable>())
@@ -30,6 +29,7 @@ void SelectionSystem::update(float dt)
                 comp.id = 0;
             }
         }
+
         // Update selectable flags and create highlighting entities
         auto aabb = selBox.get<AABB>();
         if (aabb)
