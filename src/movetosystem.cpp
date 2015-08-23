@@ -34,6 +34,7 @@ void MoveToSystem::update(float dt)
             if (radiusComp)
                 entSize = radiusComp->radius * 2 + 8; // Total size + padding
             unsigned gridSize = ceil(sqrt(static_cast<double>(selectedEnts.size())));
+            float offset = -(((gridSize * entSize) / 2) - (entSize / 2));
 
             // Setup destination points as a grid
             size_t index = 0;
@@ -41,7 +42,8 @@ void MoveToSystem::update(float dt)
             {
                 for (unsigned x = 0; index < selectedEnts.size() && x < gridSize; ++x)
                 {
-                    selectedEnts[index].assign<Destination>(currentMousePos.x + (x * entSize), currentMousePos.y + (y * entSize));
+                    selectedEnts[index].assign<Destination>(currentMousePos.x + (x * entSize) + offset,
+                                                            currentMousePos.y + (y * entSize) + offset);
                     ++index;
                 }
             }
