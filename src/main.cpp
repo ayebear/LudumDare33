@@ -7,7 +7,7 @@
 
 int main()
 {
-    GameResources resources("Ludum Dare 33: The Virus");
+    GameResources resources("Ludum Dare 33: You Are The Virus");
     ng::StateStack states;
     states.add<GameState>("Game", resources);
     states.start("Game");
