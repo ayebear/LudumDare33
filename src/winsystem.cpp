@@ -34,6 +34,6 @@ void WinSystem::update(float dt)
 void WinSystem::triggerWin(int playerId)
 {
     const char* winners[] = {"ShowWinnerViruses", "ShowWinnerCells"};
-    if (playerId >= 0 && playerId <= 0)
+    if (playerId >= 0 && playerId <= 1)
         world(winners[playerId], "winner");
 }

@@ -17,7 +17,8 @@ CameraSystem::CameraSystem(es::World& world, sf::RenderWindow& window, sf::View&
 
 void CameraSystem::initialize()
 {
-    zoomLevel = 1.0f;
+    zoomLevel = 0.5f;
+    gameView.zoom(2.0f);
 }
 
 void CameraSystem::update(float dt)

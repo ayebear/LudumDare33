@@ -17,6 +17,7 @@
 #include "camerasystem.h"
 #include "healthstatussystem.h"
 #include "winsystem.h"
+#include "boundssystem.h"
 
 GameInstance::GameInstance(sf::RenderWindow& window):
     window(window)
@@ -31,6 +32,7 @@ GameInstance::GameInstance(sf::RenderWindow& window):
     systems.add<MoveToSystem>(world); // Handle right-click to move selected entities (creates paths)
     systems.add<MovementSystem>(world); // Handles moving entities (from paths/velocities)
     systems.add<CollisionSystem>(world); // Sends events when things collide
+    systems.add<BoundsSystem>(world); // Keeps entities within bounds
     systems.add<DamageSystem>(world); // Handles collision events and causes damage, etc.
     // systems.add<>(); // Need a system for sharing anti-bodies between cells (along with attachment components for attaching other entities)
     systems.add<HealthStatusSystem>(world); // Updates colors based on health

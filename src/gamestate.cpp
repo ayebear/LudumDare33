@@ -31,15 +31,21 @@ void GameState::onStart()
     gameInstance.gameView = resources.window.getDefaultView();
     gameInstance.systems.initializeAll();
 
-    gameInstance.world.clone("Boundary");
-
     // Add initial cells
+    srand(time(nullptr));
     for (int y = 100; y <= 900; y += 600)
     {
         for (int x = 100; x <= 1600; x += 1300)
         {
             auto ent = gameInstance.world.clone("Cell");
             ent.assign<Position>(x, y);
+
+            // Setup random velocity
+            auto vec = ng::vec::angleToVector<float>(rand() % 360);
+            auto speed = ent.get<Speed>();
+            if (speed)
+                vec *= speed->speed;
+            ent.assign<Velocity>(vec.x, vec.y);
         }
     }
 

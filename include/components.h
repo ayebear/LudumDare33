@@ -329,16 +329,24 @@ struct RadiusRegen: public es::Component
 {
     static constexpr auto name = "RadiusRegen";
 
-    float amount{0.0f};
+    float amount{1.0f};
+    float current{1.0f};
+    float tolerance{1.0f};
 
     void load(const std::string& str)
     {
-        es::unpack(str, amount);
+        es::unpack(str, amount, tolerance);
+        randomize();
     }
 
     std::string save() const
     {
-        return es::pack(amount);
+        return es::pack(amount, tolerance);
+    }
+
+    void randomize()
+    {
+        current = amount + (float((rand() % ((int)tolerance * 200)) / 100.0f) - tolerance);
     }
 };
 

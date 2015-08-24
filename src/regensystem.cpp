@@ -21,7 +21,7 @@ void RegenSystem::update(float dt)
     {
         auto regen = ent.get<RadiusRegen>();
         auto radius = ent.get<Radius>();
-        radius->radius += regen->amount * dt;
+        radius->radius += regen->current * dt;
         auto splittable = ent.get<Splittable>();
         if (splittable && radius->radius >= splittable->splitAtRadius)
             handleSplit(ent);
@@ -60,11 +60,18 @@ void RegenSystem::handleSplit(es::Entity& ent)
     auto health2 = dupe.at<Health>();
     // auto position1 = ent.at<Position>();
     auto position2 = dupe.at<Position>();
+    auto regen1 = ent.get<RadiusRegen>();
+    auto regen2 = dupe.get<RadiusRegen>();
     float multiplier = splittable1->radiusMultiplier;
 
-    // Halve radius
-    radius1->radius = splittable1->splitAtRadius / 2.0f;
-    radius2->radius = splittable2->splitAtRadius / 2.0f;
+    // Randomize radius regen rate
+    regen1->randomize();
+    regen2->randomize();
+
+    // Halve area, set as new radius
+    float newRadius = areaToRadius(radiusToArea(splittable1->splitAtRadius) / 2.0f);
+    radius1->radius = newRadius;
+    radius2->radius = newRadius;
 
     // Setup new max radius
     splittable1->splitAtRadius *= multiplier;
@@ -77,8 +84,24 @@ void RegenSystem::handleSplit(es::Entity& ent)
     health2->max *= multiplier;
 
     // Set new position (anywhere near it)
-    float angle = rand() % 360;
-    auto vec = ng::vec::angleToVector(angle) * (radius2->radius * 3 * multiplier);
+    auto vec = ng::vec::angleToVector<float>(rand() % 360) * (radius2->radius * 2 * multiplier);
     position2->x += vec.x;
     position2->y += vec.y;
+
+    // Setup random velocity of split entity
+    vec = ng::vec::angleToVector<float>(rand() % 360);
+    auto speed = dupe.get<Speed>();
+    if (speed)
+        vec *= speed->speed;
+    dupe.assign<Velocity>(vec.x, vec.y);
+}
+
+float RegenSystem::radiusToArea(float radius) const
+{
+    return (ng::PI * (radius * radius));
+}
+
+float RegenSystem::areaToRadius(float area) const
+{
+    return sqrt(area / ng::PI);
 }

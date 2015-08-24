@@ -21,6 +21,8 @@ class RegenSystem: public es::System
 
     private:
         void handleSplit(es::Entity& ent);
+        float radiusToArea(float radius) const;
+        float areaToRadius(float area) const;
 
         es::World& world;
 };
